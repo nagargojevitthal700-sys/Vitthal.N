@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitthal.N 🍁 | Nature & Positivity</title>
+    
+    <!-- Google Fonts: Playfair Display for elegant serif, Inter for clean sans-serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Lenis for Smooth Scrolling -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+
+    <!-- Tailwind Config for Custom Colors and Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#141210',
+                        darker: '#0d0c0a',
+                        light: '#FAF7F2',
+                        accent: {
+                            pink: '#E8B4B8',
+                            magenta: '#C88691',
+                            gold: '#E2C275',
+                            green: '#A3B19B',
+                            blue: '#9FB4C7'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'hero-overlay': 'linear-gradient(to bottom, rgba(20, 18, 16, 0.3) 0%, rgba(20, 18, 16, 0.7) 70%, rgba(20, 18, 16, 1) 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        body {
+            background-color: #141210;
+            color: #FAF7F2;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141210;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2522;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E2C275;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 30px rgba(226, 194, 117, 0.25);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.5; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(20px) rotate(360deg); opacity: 0; }
+        }
+
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(232, 180, 184, 0.4), rgba(226, 194, 117, 0.15));
+            border-radius: 50% 0 50% 50%;
+            pointer-events: none;
+            z-index: 10;
+            filter: blur(2px);
+        }
+
+        @keyframes subtleZoom {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.08) translate(-1%, -1%); }
+        }
+
+        .hero-bg-anim {
+            animation: subtleZoom 35s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite alternate;
+        }
+
+        @keyframes sunriseGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .bg-sunrise-anim {
+            background: linear-gradient(-45deg, #141210, #2c1d1a, #2b2218, #141210);
+            background-size: 300% 300%;
+            animation: sunriseGradient 20s ease-in-out infinite;
+        }
+        
+        @keyframes softPulse {
+            0% { box-shadow: 0 0 0 0 rgba(226, 194, 117, 0.15); }
+            70% { box-shadow: 0 0 0 25px rgba(226, 194, 117, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(226, 194, 117, 0); }
+        }
+        
+        .avatar-pulse {
+            animation: softPulse 4s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+
+        /* Strict non-overlapping responsive products grid layout */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .product-item {
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 380px;
+            background-color: #1a1714;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .product-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-gold-edge {
+            border-top: 1px solid rgba(226, 194, 117, 0.15);
+            border-left: 1px solid rgba(226, 194, 117, 0.08);
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent-pink/30 selection:text-light">
+
+    <script>
+        const CONFIG = {
+            profile: {
+                username: "@vn_natural_lover_35",
+                logoText: "VN",
+                name: "Vitthal.N 🍁",
+                bio: "Nature lover 🌿 || Sharing peaceful mornings, vibrant flowers, and stunning sunrises || 📩 DM for Paid Collaboration & Promotion",
+                avatarUrl: "https://i.ibb.co/HL7B3qhD/Chat-GPT-Image-Sep-12-2026-03-59-26-PM.png", 
+                stats: {
+                    posts: "100+",
+                    followers: "150K",
+                    following: "4+"
+                }
+            },
+            links: {
+                instagram: "https://www.instagram.com/vn_natural_lover_35?stkn=bWYxMDJzejFwd29q",
+                youtube: "https://youtube.com/@vn_natural_lover_35?si=-c2apYeshgxss8CG",
+                email: "nagargojevitthal700@gmail.com"
+            },
+            hero: {
+                image: "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?q=80&w=2070&auto=format&fit=crop",
+                subtitle: "Nature • Moments • Positivity",
+                title: "Where Every Morning Feels Beautiful",
+                buttonText: "Explore My World"
+            },
+            sections: {
+                banner: {
+                    title: "GOOD MORNING 🌅",
+                    subtitle: '"Every sunrise is a fresh beginning."'
+                },
+                products: {
+                    tagline: "Visual Diary & Flower Store",
+                    title: "Products & Nature",
+                    description: "A collection of peaceful mornings, vibrant flowers, and quiet landscapes curated for you. Order fresh flowers and nature items directly below."
+                },
+                reels: {
+                    tagline: "Moving Pictures",
+                    title: "Cinematic Reels"
+                },
+                connect: {
+                    title: "Connect With Us",
+                    description: "Join the community and let's appreciate the beauty of nature together."
+                },
+                footer: {
+                    tagline: "Find peace in every petal. Thanks to Nature 🌺."
+                }
+            },
+            quotes: [
+                "Start your day with gratitude.",
+                "Find beauty in the little things.",
+                "Every sunrise is another chance.",
+                "Nature always has something to say."
+            ],
+            
+            products: [
+                { url: "https://i.ibb.co/39BtKSsH/9b6536ff-64a7-409a-8332-cddee624aa9d.jpg", label: "Morning Dew 💖", price: "₹699.00" },
+                { url: "https://i.ibb.co/0jRX2FsR/65cad67f-3ff3-49d9-8c46-5ae9685e5cdf.jpg", label: "Aster Flowers 🌸", price: "₹499.00" },
+                { url: "https://i.ibb.co/67X5qwBc/697ebcb8-e511-4bd8-96d8-17b732a8f5fc.jpg", label: "Peaceful Flowers ✨", price: "₹599.00" },
+                { url: "https://i.ibb.co/MD4gSc3y/Whats-App-Image-2026-09-12-at-6-31-29-PM.jpg", label: "Sunrise Vibes 🌿", price: "₹799.00" }
+            ],
+
+            reels: [
+                { 
+                    url: "https://i.ibb.co/VpbQkGp8/730413653-2630131650717303-1267736456867673333-n.jpg", 
+                    title: "Morning Sky",
+                    link: "https://www.instagram.com/reel/DaEfuszIwsp/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" 
+                },
+                { 
+                    url: "https://i.ibb.co/v6c562Dh/799754848-1610936627324854-4145296736509972845-n.jpg", 
+                    title: "Sunrise Flowers",
+                    link: "https://www.instagram.com/reel/DdAdJtNI-yJ/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" 
+                },
+                { 
+                    url: "https://i.ibb.co/8Ljdpdyj/746908935-1033906956231551-2512944214422730327-n.jpg", 
+                    title: "Quiet Moments",
+                    link: "https://www.instagram.com/reel/Da3-_6DyxJP/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" 
+                },
+                { 
+                    url: "https://i.ibb.co/N65bNf4j/a6567453-393a-44c3-b1b5-a9a9fdfd7bbd.jpg", 
+                    title: "Good Moments",
+                    link: "https://www.instagram.com/reel/DZJSPC9Ikz7/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" 
+                }
+            ]
+        };
+    </script>
+
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-6 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="group flex items-center gap-3" aria-label="Home">
+                <div class="w-10 h-10 rounded-full border border-accent-gold/50 flex items-center justify-center bg-dark/50 backdrop-blur-md group-hover:border-accent-pink transition-colors duration-500">
+                    <span class="font-serif font-bold text-lg bg-gradient-to-br from-accent-gold to-accent-pink bg-clip-text text-transparent" id="nav-logo-text"></span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
+                <a href="#about" class="text-light/70 hover:text-light transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-accent-gold after:transition-all after:duration-300 hover:after:w-full">About</a>
+                <a href="#products" class="text-light/70 hover:text-light transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-accent-pink after:transition-all after:duration-300 hover:after:w-full">Products</a>
+                <a href="#reels" class="text-light/70 hover:text-light transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-accent-gold after:transition-all after:duration-300 hover:after:w-full">Reels</a>
+                <a href="#connect" class="px-5 py-2 rounded-full border border-white/10 hover:border-accent-pink hover:bg-white/5 transition-all duration-300 glass">Connect With Us</a>
+            </div>
+
+            <button id="mobile-menu-btn" class="md:hidden text-light/80 p-2 hover:text-light transition-colors cursor-pointer" aria-label="Open Menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-dark/95 backdrop-blur-xl z-40 translate-x-full transition-transform duration-500 flex flex-col justify-center items-center gap-8">
+        <a href="#about" class="mobile-link text-2xl font-serif text-light hover:text-accent-gold transition-colors">About</a>
+        <a href="#products" class="mobile-link text-2xl font-serif text-light hover:text-accent-pink transition-colors">Products</a>
+        <a href="#reels" class="mobile-link text-2xl font-serif text-light hover:text-accent-gold transition-colors">Reels</a>
+        <a href="#connect" class="mobile-link text-2xl font-serif text-light hover:text-accent-pink transition-colors">Connect With Us</a>
+        <button id="close-menu-btn" class="absolute top-8 right-8 text-light/50 hover:text-light transition-colors cursor-pointer" aria-label="Close Menu">
+             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+
+    <header class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 z-0">
+            <img id="hero-bg-img" src="" alt="Hero Background" class="w-full h-full object-cover hero-bg-anim filter brightness-[0.85]">
+        </div>
+        
+        <div class="absolute inset-0 bg-hero-overlay z-10"></div>
+        <div id="particles" class="absolute inset-0 z-20 overflow-hidden"></div>
+
+        <div class="relative z-30 text-center px-4 max-w-4xl mx-auto mt-20" id="hero-content">
+            <p class="text-accent-gold/90 tracking-[0.25em] text-xs md:text-sm uppercase mb-6 font-medium" id="hero-subtitle"></p>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-medium leading-tight mb-8 text-glow text-light" id="hero-title"></h1>
+            <p class="text-light/75 text-lg md:text-xl font-light max-w-2xl mx-auto mb-12 leading-relaxed" id="hero-bio"></p>
+            
+            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center">
+                <a href="#products" id="hero-cta-btn" class="px-8 py-4 rounded-full bg-light/90 text-dark font-medium tracking-wide hover:bg-light hover:scale-105 transition-all duration-500 shadow-[0_0_20px_rgba(250,247,242,0.1)]">
+                    Explore My World
+                </a>
+                <a id="hero-ig-link" href="#" target="_blank" rel="noopener noreferrer" class="px-8 py-4 rounded-full border border-white/10 text-light/90 font-medium tracking-wide hover:border-accent-pink/50 hover:bg-white/5 hover:scale-105 transition-all duration-500 glass flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"></path></svg>
+                    Visit Instagram
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="py-24 md:py-32 relative z-20 bg-dark">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="reveal-up glass glass-gold-edge rounded-3xl p-8 md:p-14 relative overflow-hidden shadow-2xl shadow-black/50">
+                <div class="absolute top-0 right-0 w-72 h-72 bg-accent-pink/10 rounded-full blur-[90px] -translate-y-1/3 translate-x-1/3 opacity-70"></div>
+                <div class="absolute bottom-0 left-0 w-72 h-72 bg-accent-gold/10 rounded-full blur-[90px] translate-y-1/3 -translate-x-1/3 opacity-70"></div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-12 md:gap-20 relative z-10">
+                    <div class="relative w-44 h-44 md:w-56 md:h-56 shrink-0 avatar-pulse rounded-full">
+                        <img id="profile-avatar" src="" alt="Profile" class="w-full h-full object-cover rounded-full border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)] z-10 relative">
+                    </div>
+                    
+                    <div class="flex-1 text-center md:text-left">
+                        <h2 class="font-serif text-3xl md:text-5xl font-medium mb-3 text-light" id="profile-name"></h2>
+                        <p class="text-accent-pink/90 font-medium tracking-wide mb-6 text-sm md:text-base" id="profile-username"></p>
+                        <p class="text-light/75 text-lg leading-relaxed mb-10 font-light" id="profile-bio"></p>
+                        
+                        <div class="flex justify-center md:justify-start gap-8 md:gap-14 border-t border-white/5 pt-8">
+                            <div class="text-center md:text-left">
+                                <p class="text-2xl font-serif text-light mb-1" id="stat-posts"></p>
+                                <p class="text-xs text-light/50 uppercase tracking-widest">Posts</p>
+                            </div>
+                            <div class="text-center md:text-left">
+                                <p class="text-2xl font-serif text-light mb-1" id="stat-followers"></p>
+                                <p class="text-xs text-light/50 uppercase tracking-widest">Followers</p>
+                            </div>
+                            <div class="text-center md:text-left">
+                                <p class="text-2xl font-serif text-light mb-1" id="stat-following"></p>
+                                <p class="text-xs text-light/50 uppercase tracking-widest">Following</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-sunrise-anim relative overflow-hidden flex items-center justify-center min-h-[40vh]">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="relative z-10 text-center px-4 reveal-up">
+            <h2 id="banner-title" class="font-serif text-4xl md:text-6xl text-white mb-4 text-glow"></h2>
+            <p id="banner-subtitle" class="text-light/80 text-xl md:text-2xl font-light italic"></p>
+        </div>
+    </section>
+
+    <section id="products" class="py-24 md:py-32 bg-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6 reveal-up">
+                <div>
+                    <span id="products-tagline" class="text-accent-gold text-sm tracking-widest uppercase mb-3 block"></span>
+                    <h2 id="products-title" class="font-serif text-4xl md:text-5xl text-light"></h2>
+                </div>
+                <div>
+                    <p id="products-description" class="text-light/60 max-w-sm text-left md:text-right text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <div id="products-container" class="products-grid reveal-up"></div>
+        </div>
+    </section>
+
+    <section id="reels" class="py-24 bg-darker relative">
+        <div class="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 mb-12 reveal-up">
+            <span id="reels-tagline" class="text-accent-pink text-sm tracking-widest uppercase mb-2 block"></span>
+            <h2 id="reels-title" class="font-serif text-4xl md:text-5xl"></h2>
+        </div>
+
+        <div class="w-full overflow-hidden reveal-up">
+            <div id="reels-container" class="flex gap-6 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 pb-8 no-scrollbar" style="scroll-padding-left: 1.5rem;"></div>
+        </div>
+    </section>
+
+    <section class="py-32 bg-dark relative flex items-center justify-center overflow-hidden">
+        <div class="absolute w-full h-full inset-0 opacity-20 pointer-events-none">
+            <div class="absolute top-1/2 left-1/4 w-96 h-96 bg-accent-gold/20 rounded-full blur-[120px] -translate-y-1/2"></div>
+            <div class="absolute top-1/2 right-1/4 w-96 h-96 bg-accent-pink/20 rounded-full blur-[120px] -translate-y-1/2"></div>
+        </div>
+        
+        <div class="text-center px-6 max-w-4xl relative z-10">
+            <svg class="w-10 h-10 text-accent-gold/50 mx-auto mb-8" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            <h3 id="quote-text" class="font-serif text-3xl md:text-5xl leading-relaxed text-light/90 transition-opacity duration-1000 min-h-[120px] flex items-center justify-center"></h3>
+        </div>
+    </section>
+
+    <section id="connect" class="py-24 md:py-32 bg-darker relative border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal-up">
+            <h2 id="connect-title" class="font-serif text-4xl md:text-5xl mb-6 text-light"></h2>
+            <p id="connect-description" class="text-light/60 mb-12 font-light text-lg"></p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a id="footer-ig-link" href="#" target="_blank" rel="noopener noreferrer" class="glass group relative overflow-hidden rounded-2xl p-8 flex flex-col items-center gap-5 border border-white/5 hover:border-accent-pink/40 transition-all duration-500 w-full sm:w-64 transform hover:-translate-y-2">
+                    <div class="absolute inset-0 bg-gradient-to-br from-accent-pink/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    <svg class="w-10 h-10 text-light/80 group-hover:text-accent-pink transition-colors duration-500 relative z-10" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"></path></svg>
+                    <span class="font-medium tracking-wide relative z-10 text-light/90">Instagram</span>
+                </a>
+                
+                <a id="footer-yt-link" href="#" target="_blank" rel="noopener noreferrer" class="glass group relative overflow-hidden rounded-2xl p-8 flex flex-col items-center gap-5 border border-white/5 hover:border-[#ff0000]/40 transition-all duration-500 w-full sm:w-64 transform hover:-translate-y-2">
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#ff0000]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                     <svg class="w-10 h-10 text-light/80 group-hover:text-[#ff0000] transition-colors duration-500 relative z-10" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M234.33,69.52a24,24,0,0,0-16.88-16.7C185.79,45.44,128,45.31,128,45.31s-57.79.13-89.45,7.51A24,24,0,0,0,21.67,69.52C14.07,98.67,13.91,128,13.91,128s.16,29.33,7.76,58.48a24,24,0,0,0,16.88,16.7c31.66,7.38,89.45,7.51,89.45,7.51s57.79-.13,89.45-7.51a24,24,0,0,0,16.88-16.7C241.93,157.33,242.09,128,242.09,128S241.93,98.67,234.33,69.52Zm-70.21,62.8-56,32A8,8,0,0,1,96,157.39V93.28a8,8,0,0,1,12.12-6.85l56,32a8,8,0,0,1,0,13.84Z"></path></svg>
+                    <span class="font-medium tracking-wide relative z-10 text-light/90">YouTube</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-darker py-8 border-t border-white/5 text-center">
+        <p class="text-light/40 text-sm font-light">© <span id="current-year"></span> <span id="footer-name"></span>. <span id="footer-tagline"></span></p>
+    </footer>
+
+    <div id="order-modal" class="fixed inset-0 bg-dark/80 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass glass-gold-edge bg-dark/95 rounded-3xl max-w-lg w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300 shadow-2xl" id="modal-content">
+            <button id="close-modal-btn" class="absolute top-6 right-6 text-light/50 hover:text-light transition-colors cursor-pointer z-20" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="flex items-center gap-4 mb-6">
+                <img id="modal-item-img" src="" alt="Selected Flower" class="w-20 h-20 rounded-2xl object-cover border border-white/10 shrink-0">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-accent-gold font-medium">Flower Order Request</span>
+                    <h3 id="modal-item-title" class="font-serif text-2xl text-light"></h3>
+                    <p id="modal-item-price" class="text-accent-pink font-semibold mt-1"></p>
+                </div>
+            </div>
+
+            <form id="order-form" class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white/5 border border-white/10 rounded-xl px-4 py-3 gap-3">
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-light/70 font-medium">Quantity</label>
+                        <p class="text-accent-gold text-xs mt-0.5 font-medium" id="modal-total-price">Total: ₹0.00</p>
+                    </div>
+                    <div class="flex items-center gap-4 bg-dark/50 rounded-full px-2 py-1 border border-white/5">
+                        <button type="button" id="qty-minus" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/20 flex items-center justify-center text-light transition-colors cursor-pointer">-</button>
+                        <span id="qty-display" class="font-serif text-base text-light w-6 text-center">1</span>
+                        <button type="button" id="qty-plus" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/20 flex items-center justify-center text-light transition-colors cursor-pointer">+</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-light/70 mb-2 font-medium">Your Full Name</label>
+                    <input type="text" id="buyer-name" required placeholder="Enter your full name" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-light placeholder-light/30 focus:outline-none focus:border-accent-gold transition-colors text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-light/70 mb-2 font-medium">Delivery Address</label>
+                    <textarea id="buyer-address" required rows="2" placeholder="Street, City, Pincode" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-light placeholder-light/30 focus:outline-none focus:border-accent-gold transition-colors text-sm resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-light/70 mb-2 font-medium">Contact Phone or Email</label>
+                    <input type="text" id="buyer-contact" required placeholder="Your phone number or email" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-light placeholder-light/30 focus:outline-none focus:border-accent-gold transition-colors text-sm">
+                </div>
+
+                <button type="submit" id="submit-order-btn" class="w-full py-4 rounded-xl bg-gradient-to-r from-accent-gold to-accent-pink text-dark font-medium tracking-wide hover:opacity-95 transition-opacity shadow-lg shadow-black/20 mt-2 flex items-center justify-center gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    Send Flower Order via Email
+                </button>
+            </form>
+
+            <div id="order-success" class="hidden text-center py-8">
+                <div class="w-16 h-16 bg-accent-green/20 text-accent-green rounded-full flex items-center justify-center mx-auto mb-4 border border-accent-green/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <h4 class="font-serif text-2xl text-light mb-2">Order Email Prepared!</h4>
+                <p class="text-light/70 text-sm mb-6">Your email client has opened with your flower order details addressed to Vitthal. Simply hit send to complete your request.</p>
+                <button type="button" id="close-success-btn" class="px-6 py-2.5 rounded-full border border-white/10 text-light text-sm hover:bg-white/5 transition-colors cursor-pointer">Close Window</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        let db, auth, userId;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vn-nature-creator-app';
+
+        try {
+            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+            if (firebaseConfig.apiKey) {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                const initAuth = async () => {
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                        userId = auth.currentUser?.uid || crypto.randomUUID();
+                    } catch (e) {
+                        userId = crypto.randomUUID();
+                    }
+                };
+                initAuth();
+            }
+        } catch (err) {
+            console.log("Running in offline demo mode.");
+        }
+
+        window.saveOrderToFirestore = async function(orderData) {
+            if (db && auth) {
+                try {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'print_orders'), {
+                        ...orderData,
+                        userId: userId || 'anonymous',
+                        timestamp: new Date().toISOString()
+                    });
+                } catch (e) {
+                    console.error("Error saving order: ", e);
+                }
+            }
+        };
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- LENIS SMOOTH SCROLL ---
+            const lenis = new Lenis({
+                duration: 1.5,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                smooth: true,
+                mouseMultiplier: 1,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time)=>{
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0, 0);
+
+            // --- POPULATE CONFIG DATA ---
+            document.getElementById('nav-logo-text').innerText = CONFIG.profile.logoText;
+            document.getElementById('current-year').innerText = new Date().getFullYear();
+            document.getElementById('footer-name').innerText = CONFIG.profile.name;
+            
+            document.getElementById('hero-bg-img').src = CONFIG.hero.image;
+            document.getElementById('hero-subtitle').innerText = CONFIG.hero.subtitle;
+            document.getElementById('hero-title').innerText = CONFIG.hero.title;
+            document.getElementById('hero-bio').innerText = CONFIG.profile.bio;
+            document.getElementById('hero-ig-link').href = CONFIG.links.instagram;
+            
+            document.getElementById('profile-avatar').src = CONFIG.profile.avatarUrl;
+            document.getElementById('profile-name').innerText = CONFIG.profile.name;
+            document.getElementById('profile-username').innerText = CONFIG.profile.username;
+            document.getElementById('profile-bio').innerText = CONFIG.profile.bio;
+            document.getElementById('stat-posts').innerText = CONFIG.profile.stats.posts;
+            document.getElementById('stat-followers').innerText = CONFIG.profile.stats.followers;
+            document.getElementById('stat-following').innerText = CONFIG.profile.stats.following;
+
+            document.getElementById('footer-ig-link').href = CONFIG.links.instagram;
+            document.getElementById('footer-yt-link').href = CONFIG.links.youtube;
+            document.getElementById('hero-cta-btn').innerText = CONFIG.hero.buttonText;
+
+            document.getElementById('banner-title').innerText = CONFIG.sections.banner.title;
+            document.getElementById('banner-subtitle').innerText = CONFIG.sections.banner.subtitle;
+            document.getElementById('products-tagline').innerText = CONFIG.sections.products.tagline;
+            document.getElementById('products-title').innerText = CONFIG.sections.products.title;
+            document.getElementById('products-description').innerText = CONFIG.sections.products.description;
+            document.getElementById('reels-tagline').innerText = CONFIG.sections.reels.tagline;
+            document.getElementById('reels-title').innerText = CONFIG.sections.reels.title;
+            document.getElementById('connect-title').innerText = CONFIG.sections.connect.title;
+            document.getElementById('connect-description').innerText = CONFIG.sections.connect.description;
+            document.getElementById('footer-tagline').innerText = CONFIG.sections.footer.tagline;
+
+            // --- PRODUCTS / GALLERY RENDER ---
+            const productsContainer = document.getElementById('products-container');
+            CONFIG.products.forEach((img, index) => {
+                const item = document.createElement('div');
+                item.className = 'product-item shadow-xl group cursor-pointer';
+                
+                item.innerHTML = `
+                    <img src="${img.url}" alt="${img.label}" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darker/90 via-darker/20 to-transparent flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="flex justify-between items-start w-full">
+                            <span class="px-3 py-1 rounded-full bg-dark/70 backdrop-blur-md border border-white/10 text-accent-gold text-xs font-semibold tracking-wide">${img.price}</span>
+                        </div>
+                        <div class="flex items-end justify-between w-full">
+                            <div>
+                                <span class="font-serif text-xl font-medium text-light tracking-wide block mb-1">${img.label}</span>
+                                <span class="text-xs text-light/70 uppercase tracking-widest font-light">Order Fresh</span>
+                            </div>
+                            <button class="buy-product-btn px-4 py-2.5 rounded-xl bg-gradient-to-r from-accent-gold to-accent-pink text-dark text-xs font-semibold tracking-wide shadow-md hover:scale-105 transition-transform cursor-pointer" data-index="${index}">
+                                Buy Flower
+                            </button>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-4 right-4 sm:hidden z-10">
+                        <button class="buy-product-btn px-3 py-2 rounded-xl bg-accent-gold text-dark text-xs font-semibold shadow-lg cursor-pointer" data-index="${index}">
+                            ${img.price} • Buy
+                        </button>
+                    </div>
+                `;
+                
+                item.addEventListener('click', () => {
+                    openOrderModal(index);
+                });
+
+                productsContainer.appendChild(item);
+            });
+
+            // --- MODAL & ORDER LOGIC ---
+            const modal = document.getElementById('order-modal');
+            const modalContent = document.getElementById('modal-content');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const closeSuccessBtn = document.getElementById('close-success-btn');
+            const orderForm = document.getElementById('order-form');
+            const orderSuccess = document.getElementById('order-success');
+            
+            let selectedItem = null;
+            let currentQty = 1;
+            let numericPrice = 0;
+            let currentCurrency = '₹';
+            
+            // Quantity DOM Elements
+            const qtyDisplay = document.getElementById('qty-display');
+            const modalTotalPrice = document.getElementById('modal-total-price');
+            const qtyMinus = document.getElementById('qty-minus');
+            const qtyPlus = document.getElementById('qty-plus');
+
+            function updateTotal() {
+                const total = currentQty * numericPrice;
+                // Formats the total smartly with commas (e.g. ₹1,198.00)
+                modalTotalPrice.innerText = `Total: ${currentCurrency}${total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            }
+
+            qtyMinus.addEventListener('click', () => {
+                if (currentQty > 1) {
+                    currentQty--;
+                    qtyDisplay.innerText = currentQty;
+                    updateTotal();
+                }
+            });
+
+            qtyPlus.addEventListener('click', () => {
+                currentQty++;
+                qtyDisplay.innerText = currentQty;
+                updateTotal();
+            });
+
+            function openOrderModal(idx) {
+                selectedItem = CONFIG.products[idx];
+
+                // Parse price dynamically for calculations (extracts numbers)
+                numericPrice = parseFloat(selectedItem.price.replace(/[^\d.]/g, ''));
+                if (isNaN(numericPrice)) numericPrice = 0;
+
+                // Extract currency symbol automatically (e.g., ₹, $, Rs.)
+                let currencyMatch = selectedItem.price.match(/[^\d.,\s]+/);
+                currentCurrency = currencyMatch ? currencyMatch[0].trim() : '₹';
+
+                // Reset Quantity
+                currentQty = 1;
+                qtyDisplay.innerText = currentQty;
+                updateTotal();
+
+                document.getElementById('modal-item-img').src = selectedItem.url;
+                document.getElementById('modal-item-title').innerText = selectedItem.label;
+                document.getElementById('modal-item-price').innerText = `${selectedItem.price} each`;
+
+                orderForm.reset();
+                orderForm.classList.remove('hidden');
+                orderSuccess.classList.add('hidden');
+
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-95');
+                document.body.classList.add('overflow-hidden');
+                
+                // PRO UX: Stop background scrolling and auto-focus the name input
+                lenis.stop(); 
+                setTimeout(() => document.getElementById('buyer-name').focus(), 100);
+            }
+
+            modalContent.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            function closeModal() {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modalContent.classList.add('scale-95');
+                document.body.classList.remove('overflow-hidden');
+                
+                // PRO UX: Resume smooth scrolling
+                lenis.start(); 
+            }
+
+            closeModalBtn.addEventListener('click', closeModal);
+            closeSuccessBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', closeModal);
+
+            orderForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('buyer-name').value;
+                const address = document.getElementById('buyer-address').value;
+                const contact = document.getElementById('buyer-contact').value;
+                
+                const totalAmountStr = `${currentCurrency}${(currentQty * numericPrice).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+                const orderData = {
+                    itemTitle: selectedItem.label,
+                    itemPrice: selectedItem.price,
+                    itemImage: selectedItem.url,
+                    quantity: currentQty,
+                    totalAmount: totalAmountStr,
+                    buyerName: name,
+                    buyerAddress: address,
+                    buyerContact: contact
+                };
+
+                if (window.saveOrderToFirestore) {
+                    window.saveOrderToFirestore(orderData);
+                }
+
+                const targetEmail = "mundevitthal511@gmail.com";
+                const emailSubject = encodeURIComponent(`🌸 New Flower Order: ${currentQty}x ${orderData.itemTitle}`);
+                
+                // PRO UX: Using universal \r\n line breaks so the email looks perfect on ALL email apps
+                const emailBody = encodeURIComponent(
+                    `Hello Vitthal,\r\n\r\n` +
+                    `You have received a new flower order request from your website!\r\n\r\n` +
+                    `--- ORDER DETAILS ---\r\n` +
+                    `Item: ${orderData.itemTitle}\r\n` +
+                    `Price per item: ${orderData.itemPrice}\r\n` +
+                    `Quantity: ${currentQty}\r\n` +
+                    `Total Amount: ${totalAmountStr}\r\n` +
+                    `Image Reference: ${orderData.itemImage}\r\n\r\n` +
+                    `--- CUSTOMER DETAILS ---\r\n` +
+                    `Name: ${name}\r\n` +
+                    `Delivery Address:\r\n${address}\r\n` +
+                    `Contact Number/Email: ${contact}\r\n\r\n` +
+                    `Sent securely via Vitthal.N 🍁.`
+                );
+                
+                window.location.href = `mailto:${targetEmail}?subject=${emailSubject}&body=${emailBody}`;
+
+                orderForm.classList.add('hidden');
+                orderSuccess.classList.remove('hidden');
+            });
+
+            // --- REELS RENDER ---
+            const reelsContainer = document.getElementById('reels-container');
+            CONFIG.reels.forEach(reel => {
+                const card = document.createElement('a');
+                card.href = reel.link;
+                card.target = "_blank";
+                card.rel = "noopener noreferrer";
+                card.className = "shrink-0 w-72 md:w-80 aspect-[9/16] rounded-2xl overflow-hidden relative group block shadow-xl shadow-black/40 border border-white/5 cursor-pointer";
+                
+                card.innerHTML = `
+                    <img src="${reel.url}" alt="${reel.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darker/95 via-darker/20 to-transparent"></div>
+                    <div class="absolute top-4 right-4 w-10 h-10 rounded-full bg-dark/60 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-4 h-4 text-accent-pink fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h4 class="font-serif text-lg font-medium text-light mb-2 group-hover:text-accent-gold transition-colors duration-300 drop-shadow-md">${reel.title}</h4>
+                        <div class="flex items-center gap-2 opacity-80">
+                             <svg class="w-4 h-4 text-light" fill="currentColor" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"></path></svg>
+                            <span class="text-xs text-light font-medium tracking-widest">REEL</span>
+                        </div>
+                    </div>
+                `;
+                reelsContainer.appendChild(card);
+            });
+
+            // --- NAVBAR & MOBILE MENU ---
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-dark/85', 'backdrop-blur-xl', 'shadow-sm', 'shadow-black/10', 'py-4', 'border-b', 'border-white/5');
+                    navbar.classList.remove('py-6');
+                } else {
+                    navbar.classList.remove('bg-dark/85', 'backdrop-blur-xl', 'shadow-sm', 'shadow-black/10', 'py-4', 'border-b', 'border-white/5');
+                    navbar.classList.add('py-6');
+                }
+            });
+
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const closeMenuBtn = document.getElementById('close-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('translate-x-full');
+                document.body.classList.toggle('overflow-hidden');
+            }
+
+            mobileMenuBtn.addEventListener('click', toggleMenu);
+            closeMenuBtn.addEventListener('click', toggleMenu);
+            mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+            // --- FLOATING PETALS ---
+            const particlesContainer = document.getElementById('particles');
+            const numParticles = 25;
+            
+            for (let i = 0; i < numParticles; i++) {
+                let particle = document.createElement('div');
+                particle.classList.add('petal');
+                
+                let size = Math.random() * 15 + 5;
+                let left = Math.random() * 100;
+                let animDuration = Math.random() * 10 + 10;
+                let delay = Math.random() * 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}%`;
+                particle.style.bottom = `-20px`;
+                particle.style.animation = `float ${animDuration}s linear ${delay}s infinite`;
+                particlesContainer.appendChild(particle);
+            }
+
+            // --- ROTATING QUOTES ---
+            const quoteEl = document.getElementById('quote-text');
+            let currentQuoteIndex = 0;
+            
+            function updateQuote() {
+                quoteEl.style.transition = 'opacity 1.5s ease-in-out';
+                quoteEl.style.opacity = '0';
+                
+                setTimeout(() => {
+                    currentQuoteIndex = (currentQuoteIndex + 1) % CONFIG.quotes.length;
+                    quoteEl.innerText = `"${CONFIG.quotes[currentQuoteIndex]}"`;
+                    quoteEl.style.opacity = '1';
+                }, 1500);
+            }
+            
+            quoteEl.innerText = `"${CONFIG.quotes[0]}"`;
+            setInterval(updateQuote, 7000);
+
+            // --- GSAP ANIMATIONS ---
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.from("#hero-content > *", {
+                y: 40,
+                opacity: 0,
+                duration: 1.5,
+                stagger: 0.25,
+                ease: "power3.out",
+                delay: 0.3
+            });
+
+            const revealElements = document.querySelectorAll('.reveal-up');
+            revealElements.forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "sine.out"
+                });
+            });
+
+            gsap.from(".product-item", {
+                scrollTrigger: {
+                    trigger: "#products-container",
+                    start: "top 80%",
+                },
+                y: 40,
+                opacity: 0,
+                duration: 1.2,
+                stagger: 0.15,
+                ease: "power3.out"
+            });
+        });
+    </script>
+</body>
+</html>
